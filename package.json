@@ -1,0 +1,24 @@
+{
+  "name": "webstoreapi",
+  "version": "1.0.0",
+  "description": "webstore ui created for cloud integration course at OAMK",
+  "main": "index.js",
+  "scripts": {
+    "test": "apitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AAoamk/webstoreapiproject.git"
+  },
+  "author": "Aleksi Alavahtola",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AAoamk/webstoreapiproject/issues"
+  },
+  "homepage": "https://github.com/AAoamk/webstoreapiproject#readme",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.2"
+  }
+}
