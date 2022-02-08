@@ -2,7 +2,6 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express();
-const port = 3000;
 console.log('connecting to', process.env.MONGODB_URI)
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -16,3 +15,7 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port,()=>console.log('hello world app listening'))
+app.use(cors())
+app.use(express.json())
+
+module.exports = app
