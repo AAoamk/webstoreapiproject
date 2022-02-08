@@ -4,7 +4,7 @@
   "description": "webstore ui created for cloud integration course at OAMK",
   "main": "index.js",
   "scripts": {
-    "test": "apitest"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,9 @@
   "dependencies": {
     "body-parser": "^1.19.1",
     "cors": "^2.8.5",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "mongoose": "^6.1.7",
+    "mongoose-unique-validator": "^3.0.0",
+    "validator": "^13.7.0"
   }
 }
