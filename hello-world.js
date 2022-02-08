@@ -4,16 +4,13 @@ const cors = require('cors')
 const app = express();
 const port = process.env.PORT || 3001
 console.log('connecting to', process.env.MONGODB_URI)
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb+srv://websitecluster.t4wds.mongodb.net/websitecluster")
   .then(() => {
     console.log('connected to MongoDB')
   })
   .catch((error) => {
     console.log('error connection to MongoDB:', error.message)
   })
-app.get('/', (req, res) => {
-    res.send('hello world');
-})
 
 app.listen(port,()=>console.log('hello world app listening'))
 app.use(cors())
