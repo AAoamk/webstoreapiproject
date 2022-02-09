@@ -16,5 +16,9 @@ router.post("/adduser", async (req, res) => {
 	await post.save()
 	res.send(post)
 })
+router.get("/users/:username", async (req, res) => {
+	const post = await Post.findOne({ _id: req.params.id })
+	res.send(post)
+})
 
 module.exports = router
