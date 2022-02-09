@@ -1,6 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const routes = require("./routes")
+const PORT = process.env.PORT || 80
 // Connect to MongoDB database
 mongoose.connect("mongodb+srv://Snutri:tCbJtoBWdEHCOEjS@websitecluster.t4wds.mongodb.net/websitecluster?retryWrites=true&w=majority", { useNewUrlParser: true })
 	.then(() => {
@@ -8,7 +9,7 @@ mongoose.connect("mongodb+srv://Snutri:tCbJtoBWdEHCOEjS@websitecluster.t4wds.mon
         app.use(express.json())
         app.use("/api", routes) // new
 
-		app.listen(5000, () => {
+		app.listen(PORT, () => {
 			console.log("Server has started!")
 		})
 	})
