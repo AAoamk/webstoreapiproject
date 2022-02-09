@@ -1,21 +1,27 @@
 const express = require("express")
 const Post = require("../models/postuser") // new
+const { response } = require("../routes")
 const userRouter = express.Router()
 
 // Get all users
-userRouter.get("/users", async (req, res) => {
+userRouter.get("/", async (req, res) => {
 	const users = await Post.find()
 	res.send(users)
 })
 // add user
 userRouter.post("/adduser", async (req, res) => {
-	const post = new Post({
-		username: req.body.username,
-		email: req.body.email,
-        password: req.body.password,
-	})
-	await post.save()
-	res.send(post)
+	try {
+		const post = new Post({
+			username: req.body.username,
+			email: req.body.email,
+    	    password: req.body.password,
+		})
+		await post.save()
+		res.send(post)
+	} catch (exception) {
+		next(exception)
+	}
+
 })
 // find user by username
 userRouter.get("/users/:username", async (req, res) => {
