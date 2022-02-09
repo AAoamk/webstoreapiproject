@@ -48,4 +48,13 @@ router.patch("/users/:username", async (req, res) => {
 		res.send({ error: "Post doesn't exist!" })
 	}
 })
+router.delete("/users/:username", async (req, res) => {
+	try {
+		await Post.deleteOne({ username: req.params.username })
+		res.status(204).send()
+	} catch {
+		res.status(404)
+		res.send({ error: "Post doesn't exist!" })
+	}
+})
 module.exports = router
