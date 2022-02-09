@@ -20,7 +20,7 @@ router.post("/adduser", async (req, res) => {
 // find user by username
 router.get("/users/:username", async (req, res) => {
     try {
-	const post = await Post.findOne({ _id: req.params.id })
+	const post = await Post.findOne({ username: req.params.username })
 	res.send(post)
     } catch {
     res.status(404)
@@ -30,14 +30,14 @@ router.get("/users/:username", async (req, res) => {
 
 router.patch("/users/:username", async (req, res) => {
 	try {
-		const post = await Post.findOne({ _id: req.params.id })
+		const post = await Post.findOne({ username: req.params.username })
 
 		if (req.body.email) {
-			post.title = req.body.title
+			post.email = req.body.email
 		}
 
 		if (req.body.password) {
-			post.content = req.body.content
+			post.password = req.body.password
 		}
 
 
