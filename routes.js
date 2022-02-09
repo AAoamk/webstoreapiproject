@@ -1,9 +1,9 @@
 const express = require("express")
-const app = express()
+const rootRouter = express.Router()
 const cors = require('cors')
 const userRouter = require('./controllers/userRoute')
 
 
-app.use('/api/user', userRouter)
+rootRouter.use('/api/user', userRouter)
 
-module.exports = app
+module.exports = rootRouter

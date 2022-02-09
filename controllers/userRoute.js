@@ -1,6 +1,6 @@
 const express = require("express")
 const Post = require("../models/postuser") // new
-const { response } = require("../routes")
+//const { response } = require("../routes")
 const userRouter = express.Router()
 
 // Get all users
@@ -34,7 +34,7 @@ userRouter.get("/users/:username", async (req, res) => {
 }
 })
 
-userRouter.patch("/users/:username", async (req, res) => {
+userRouter.patch("/patch/:username", async (req, res) => {
 	try {
 		const post = await Post.findOne({ username: req.params.username })
 
@@ -54,7 +54,7 @@ userRouter.patch("/users/:username", async (req, res) => {
 		res.send({ error: "Post doesn't exist!" })
 	}
 })
-userRouter.delete("/users/:username", async (req, res) => {
+userRouter.delete("/del/:username", async (req, res) => {
 	try {
 		await Post.deleteOne({ username: req.params.username })
 		res.status(204).send()
