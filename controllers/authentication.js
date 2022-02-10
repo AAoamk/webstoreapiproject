@@ -1,22 +1,20 @@
-const { request } = require('express')
+/*const express = require("express")
+const bcrypt = require('bcrypt')
 const jwToken = require('jsonwebtoken')
-const User = require('./models/postuser')
+const User = require('../models/postuser')
 const login = express.Router()
 
 login.post("/", async (req, res) => {
     const user = await User.findOne({username: request.body.username})
-    const passwordCheck = user === null
-	try {
-		const user = new User({
-			username: req.body.username,
-			email: req.body.email,
-    	    password: req.body.password,
+	const credentials = user && (await bcrypt.compare(body.password, user.passwordHash));
+	if(!(credentials)) {
+		return response.status(401).json({
+		error: 'invalid username or password'
 		})
-		
-		await user.save()
-		res.send(user)
-	} catch (exception) {
-		next(exception)
 	}
+	const token = jwt.sign(token, )
 
+	
 })
+
+module.exports = auth */
