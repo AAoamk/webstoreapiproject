@@ -27,12 +27,12 @@ const listschema = mongoose.Schema({
         enum: ['shipping', 'pickup'],
 		require: true
 	},
-	/*
+	
 	userReference: {
 		type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post'
+        ref: "User"	
 	},
-	*/
+	
 },{ versionKey: false,timestamps: true })
 
 module.exports = mongoose.model("lists", listschema)

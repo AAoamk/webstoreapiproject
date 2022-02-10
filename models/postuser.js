@@ -16,4 +16,4 @@ const userschema = mongoose.Schema({
 	},
 },{ versionKey: false,timestamps: true  })
 
-module.exports = mongoose.model("Post", userschema)
+module.exports = mongoose.model("User", userschema)
