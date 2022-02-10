@@ -14,12 +14,6 @@ const userschema = mongoose.Schema({
 		  minlength: 10,
 		  require: true
 	},
-})
-userschema.set('toJSON', {
-	transform: (document, returnedObject) => {
-	  returnedObject.id = returnedObject._id.toString()
-	  delete returnedObject._id
-	  delete returnedObject.__v
-	}
-  })
+},{ versionKey: false,timestamps: true  })
+
 module.exports = mongoose.model("Post", userschema)
