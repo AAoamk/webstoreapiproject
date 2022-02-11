@@ -8,5 +8,5 @@ const auth = require('./controllers/authentication')
 
 rootRouter.use('/api/user', userRouter)
 rootRouter.use('/api/list', listingRouter)
-rootRouter.use('/api/login', auth)
+//rootRouter.use('/api/login', auth)
 module.exports = rootRouter

@@ -1,4 +1,5 @@
 const express = require("express")
+const bcrypt = require('bcrypt')
 const User = require("../models/postuser") // new
 //const { response } = require("../routes")
 const userRouter = express.Router()
@@ -11,23 +12,23 @@ userRouter.get("/", async (req, res) => {
 // add user
 userRouter.post("/adduser", async (req, res) => {
 	try {
-		const post = new User({
-			username: req.body.username,
-			email: req.body.email,
-    	    password: req.body.password,
+		const hash = await bcrypt.hash(req.body.password, 5)
+		const user = new User({
+		username: req.body.username,
+		email: req.body.email,
+    	hash,
 		})
-		await post.save()
-		res.send(post)
-	} catch (exception) {
+		await user.save()
+		res.send(user)
+	} catch (exception){
 		next(exception)
 	}
-
 })
 // find user by username
 userRouter.get("/users/:username", async (req, res) => {
     try {
-	const post = await User.findOne({ username: req.params.username })
-	res.send(post)
+	const user = await User.findOne({ username: req.params.username })
+	res.send(user)
     } catch {
     res.status(404)
     res.send({ error:  "User doesn't exist!" })
@@ -36,19 +37,19 @@ userRouter.get("/users/:username", async (req, res) => {
 
 userRouter.patch("/patch/:username", async (req, res) => {
 	try {
-		const post = await User.findOne({ username: req.params.username })
-
+		const user = await User.findOne({ username: req.params.username })
 		if (req.body.email) {
-			post.email = req.body.email
+			user.email = req.body.email
 		}
 
 		if (req.body.password) {
-			post.password = req.body.password
+			const hash = await bcrypt.hash(req.body.password, 5)
+			user.password = hash
 		}
 
 
-		await post.save()
-		res.send(post)
+		await user.save()
+		res.send(user)
 	} catch {
 		res.status(404)
 		res.send({ error:  "User doesn't exist!" })
