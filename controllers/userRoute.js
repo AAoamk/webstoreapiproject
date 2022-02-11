@@ -11,18 +11,14 @@ userRouter.get("/", async (req, res) => {
 })
 // add user
 userRouter.post("/adduser", async (req, res) => {
-	try {
 		const hash = await bcrypt.hash(req.body.password, 5)
 		const user = new User({
-		username: req.body.username,
-		email: req.body.email,
-    	hash,
+			username: req.body.username,
+			email: req.body.email,
+    		hash,
 		})
 		await user.save()
 		res.send(user)
-	} catch (exception){
-		next(exception)
-	}
 })
 // find user by username
 userRouter.get("/users/:username", async (req, res) => {

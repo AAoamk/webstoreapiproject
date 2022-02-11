@@ -9,7 +9,7 @@ const userschema = mongoose.Schema({
 		type: String,
 		require: true
 	},
-	password: String
+	hash: String
 },{ versionKey: false,timestamps: true  })
 
 module.exports = mongoose.model("User", userschema)
