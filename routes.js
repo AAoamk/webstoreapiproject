@@ -1,12 +1,15 @@
-const express = require("express")
-const rootRouter = express.Router()
+const express = require('express')
+const app = express()
 const cors = require('cors')
-const userRouter = require('./controllers/userRoute')
-const listingRouter = require('./controllers/listingRoute')
-const auths = require('./controllers/authentication')
+const postingRouter = require('./controllers/postings')
+const usersRouter = require('./controllers/users')
+const authentication = require('./middleware/auth')
 
+app.use(cors())
+app.use(express.json())
 
-rootRouter.use('/api/user', userRouter)
-rootRouter.use('/api/list', listingRouter)
-rootRouter.use('/api/login', auths)
-module.exports = rootRouter
+app.use('/api/users', usersRouter)
+app.use('/api/postings', postingRouter)
+app.use('/api/login', authentication)
+
+module.exports = app

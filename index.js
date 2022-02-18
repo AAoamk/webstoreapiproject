@@ -1,17 +1,18 @@
-const express = require("express")
+const app = require('./routes')
 const http = require('http')
-const mongoose = require("mongoose")
-const routes = require("./routes")
+const mongoose = require('mongoose')
+const server = http.createServer(app)
 require('dotenv').config()
-const PORT = process.env.PORT
 
-// Connect to MongoDB database
-mongoose.connect(process.env.MongoSecret, { useNewUrlParser: true })
-	.then(() => {
-		const app = express()
-        app.use(express.json())
-		app.use(routes);
-		app.listen(PORT, () => {
-			console.log("Server has started!")
-		})
-	})
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message)
+  })
+
+const API_PORT = process.env.API_PORT
+server.listen(API_PORT, () => {
+    console.log(`Server running on port ${API_PORT}`)
+})
