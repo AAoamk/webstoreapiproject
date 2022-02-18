@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
     console.log('error connection to MongoDB:', error.message)
   })
 
-const API_PORT = process.env.API_PORT
-server.listen(API_PORT, () => {
-    console.log(`Server running on port ${API_PORT}`)
+const PORT = process.env.PORT
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
 })
