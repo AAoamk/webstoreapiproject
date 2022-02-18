@@ -1,3 +1,6 @@
+1.6.2 fixed users
+1.6.0 remade postings and users
+1.5.0 reworked auth into middleware
 1.4.0 added password hashing
 1.3.0 made working listings
 1.2.0 changed code to use multiple controllers instead of routes

@@ -11,4 +11,4 @@ const postingSchema = new mongoose.Schema({
 	userReference: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
 },{ versionKey: false,timestamps: true })
 
-  module.exports = mongoose.model('Listing', postingSchema)
+  module.exports = mongoose.model('Posting', postingSchema)

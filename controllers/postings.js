@@ -11,7 +11,7 @@ const getTokenFrom = req => {
   return null
 }
 
-postingRouter.get("/all", async (req, res) => {
+postingRouter.get("/", async (req, res) => {
 	const users = await Posting.find()
 	res.send(users)
 })
@@ -22,7 +22,7 @@ postingRouter.post('/', async (req, res) => {
   if (token == null) {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
-  const decodedToken = jwt.verify(token, process.env.SECRET)
+  const decodedToken = jwt.verify(token, process.env.TOKEN_KEY)
   if (!token || !decodedToken.id) {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
@@ -36,11 +36,11 @@ postingRouter.post('/', async (req, res) => {
     price: req.body.price,
     dateOfPost: req.body.dateOfPost,
     deliveryType: req.body.deliveryType,
-    user: user.id
+    userReference: user.id
 })
 
   const savedPosting = await posting.save()
-  user.postings = user.postings.concat(savedPosting._title)
+  user.postings = user.postings.concat(savedPosting._id)
   await user.save()
   res.json(savedPosting.toJSON())
 })
@@ -58,29 +58,29 @@ postingRouter.get('/date/:date', async (req, res) => {
   res.send(posting)
 })
 
-postingRouter.delete('/del/:id', async (req, res) => {
-  const title = req.params.id
+postingRouter.delete('/:id', async (req, res) => {
+  const id = req.params.id
   try {
-    const postingToDelete = await Posting.find(title)
-    const jwToken = fetchToken(req)
-    if (jwToken == null) {
+    const postingToDelete = await Posting.findById(id)
+    const token = getTokenFrom(req)
+    if (token == null) {
       return res.status(401).json({ error: 'token missing or invalid' })
     }
-    const jwtCertified = jwt.verify(jwToken, process.env.TOKEN_KEY)
+    const decodedToken = jwt.verify(token, process.env.TOKEN_KEY)
     if (!postingToDelete) {
-      return res.status(400).json({ error: 'title doesnt match a posting' + title })
+      return res.status(400).json({ error: 'no posting found with the id ' + id })
     }
-    if (!jwtCertified.title) {
-      return res.status(401).json({ error: 'missing or invalid' })
-    } else if (postingToDelete.user.toString() !== jwtCertified.title) {
-      return res.status(401).json({ error: 'authorization failed' })
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: 'missing or invalid token' })
+    } else if (postingToDelete.user.toString() !== decodedToken.id) {
+      return res.status(401).json({ error: 'not authorized' })
     } else {
-      const deletedPosting = await Posting.findByIdAndRemove(title)
+      const deletedPosting = await Posting.findByIdAndRemove(id)
       res.json(deletedPosting.toJSON())
     }
 
   } catch (exception) {
-    return res.status(400).json({ error: 'req is faulty' })
+    return res.status(400).json({ error: 'bad req' })
   }
 })
 
