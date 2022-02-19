@@ -6,11 +6,12 @@ module.exports = require('./');
 const assert = require('assert');
 require('dotenv').config()
 const PORT = process.env.PORT
+let server = `http://localhost:${process.env.PORT}`
 describe('/GET users', () => 
 {
     it('It should return the users array.', (done) => 
     {
-      chai.request('http://localhost:80').get('/api/users/').end((err, res) => 
+      chai.request(server).get('/api/users/').end((err, res) => 
       {
         chai.expect(res).to.have.property('body');
         chai.expect(res.body[0]).to.have.property('_id');
@@ -25,7 +26,7 @@ describe('login', () =>
 {
     it('It should try to login, returning error due to invalid credentials', (done) =>
     {
-        chai.request('http://localhost:80').get('/api/login/').end((err, res)=>
+        chai.request(server).get('/api/login/').end((err, res)=>
         {
             chai.expect(res).to.have.property('error');
             done();
@@ -44,7 +45,7 @@ describe('/POST Create User', () =>
             "email": "mochatest@gmail.com",
             "password": "mochatest"
         }
-        chai.request('http://localhost:80')
+        chai.request(server)
             .post('/api/users')
             .send(user)
             .end((err, res) => {
@@ -57,7 +58,7 @@ describe('/GET car category postings', () =>
 {
     it('It should return all car postings.', (done) => 
     {
-      chai.request('http://localhost:80').get('/api/postings/category/cars/').end((err, res) => 
+      chai.request(server).get('/api/postings/category/cars/').end((err, res) => 
       {
         chai.expect(res).to.have.property('body');
         chai.expect(res.body[0]).to.have.property('_id');
@@ -76,7 +77,7 @@ describe('/GET postings by date', () =>
 {
     it('It should return all posts from the specified date.', (done) => 
     {
-      chai.request('http://localhost:80').get('/api/postings/date/2022-02-18').end((err, res) => 
+      chai.request(server).get('/api/postings/date/2022-02-18').end((err, res) => 
       {
         chai.expect(res).to.have.property('body');
         chai.expect(res.body[0]).to.have.property('_id');
@@ -95,7 +96,7 @@ describe('/GET postings by location', () =>
 {
     it('It should return all postings from the specified location postings.', (done) => 
     {
-      chai.request('http://localhost:80').get('/api/postings/location/oulu').end((err, res) => 
+      chai.request(server).get('/api/postings/location/oulu').end((err, res) => 
       {
         chai.expect(res).to.have.property('body');
         chai.expect(res.body[0]).to.have.property('_id');

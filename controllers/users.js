@@ -1,7 +1,14 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-
+const jwt = require('jsonwebtoken')
+const getTokenFrom = req => {
+  const authorization = req.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
 usersRouter.post('/', async (req, res, next) => {
   try {
     
@@ -39,5 +46,32 @@ usersRouter.delete('/del/:id', async (req, res)=> {
     return res.status(204).end();
   })
 });
+
+usersRouter.delete('/:id', async (request, response) => 
+{
+  try 
+  {
+    const id = request.params.id
+    const user = await User.findById(id)
+    const token = getTokenFrom(request)
+
+    if (token == null)
+      return response.status(401).json({ error: 'Token missing or invalid' })
+
+    if (!user)
+      return response.status(400).json({ error: "No users found with the id: "})
+
+    const decodedToken = jwt.verify(token, process.env.TOKEN_KEY)
+    if (!decodedToken.id)
+      return response.status(401).json({ error: 'Missing or invalid token' })
+
+    const deletedUser = await User.findByIdAndRemove(id)
+    response.json(deletedUser.toJSON())
+  } 
+  catch (exception) 
+  {
+    return response.status(400).json({ error: 'Bad request' })
+  }
+})
 
 module.exports = usersRouter
