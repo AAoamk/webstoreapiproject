@@ -30,7 +30,7 @@ usersRouter.get('/', async (req, res) => {
 	res.send(users)
 })
 
-usersRouter.delete('/del/?id=', async (req, res)=> {
+usersRouter.delete('/del/:id', async (req, res)=> {
   User
   .findByIdAndRemove(req.params.id)
   .exec()
