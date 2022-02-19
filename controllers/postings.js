@@ -17,7 +17,7 @@ postingRouter.get("/", async (req, res) => {
 })
 
 postingRouter.post('/', async (req, res) => {
-
+  try {
   const token = getTokenFrom(req)
   if (token == null) {
     return res.status(401).json({ error: 'token missing or invalid' })
@@ -43,18 +43,21 @@ postingRouter.post('/', async (req, res) => {
   user.postings = user.postings.concat(savedPosting._id)
   await user.save()
   res.json(savedPosting.toJSON())
+} catch (exception) {
+  return res.status(400).json({ error: 'duplicate' })
+}
 })
 
 postingRouter.get('/location/:location', async (req, res) => {
-  const posting = await Posting.find({location: req.params.location})
+  const posting = await Posting.find({location: req.params.location}).populate('userReference', ['fullname', 'phonenumber', 'email'])
   res.send(posting)
 })
 postingRouter.get('/category/:category', async (req, res) => {
-  const posting = await Posting.find({category: req.params.category})
+  const posting = await Posting.find({category: req.params.category}).populate('userReference', ['fullname', 'phonenumber', 'email'])
   res.send(posting)
 })
 postingRouter.get('/date/:date', async (req, res) => {
-  const posting = await Posting.find({dateOfPost: {$regex: "[0-9]{4}-[0-9]{2}-[0-9]{2}","$options": "i"} })
+  const posting = await Posting.find({dateOfPost: {$regex: "[0-9]{4}-[0-9]{2}-[0-9]{2}","$options": "i"} }).populate('userReference', ['fullname', 'phonenumber', 'email'])
   res.send(posting)
 })
 
@@ -63,6 +66,7 @@ postingRouter.delete('/:id', async (req, res) => {
   try {
     const postingToDelete = await Posting.findById(id)
     const token = getTokenFrom(req)
+    //console.log("token received")
     if (token == null) {
       return res.status(401).json({ error: 'token missing or invalid' })
     }
@@ -72,35 +76,32 @@ postingRouter.delete('/:id', async (req, res) => {
     }
     if (!decodedToken.id) {
       return res.status(401).json({ error: 'missing or invalid token' })
-    } else if (postingToDelete.user.toString() !== decodedToken.id) {
-      return res.status(401).json({ error: 'not authorized' })
     } else {
+      //console.log("starting to run find posting")
       const deletedPosting = await Posting.findByIdAndRemove(id)
+      //console.log("posting found and removed")
       res.json(deletedPosting.toJSON())
     }
-
   } catch (exception) {
     return res.status(400).json({ error: 'bad req' })
   }
-})
 
+})
+/*
 postingRouter.patch('/patch/:id', async (req, res) => {
-  const title = req.params.id
+  const id = req.params.id
   try {
-    const postingToModify = await Posting.findById(title)
-    const jwToken = fetchToken
-  (req)
-    if (jwToken == null) {
+    const postingToModify = await Posting.findById(id)
+    const token = getTokenFrom(req)
+    if (token == null) {
       return res.status(401).json({ error: 'token missing or invalid' })
     }
-    const jwtCertified = jwt.verify(jwToken, process.env.TOKEN_KEY)
+    const decodedToken = jwt.verify(token, process.env.TOKEN_KEY)
     if (!postingToModify) {
-      return res.status(400).json({ error: 'title doesnt match a posting' + title })
+      return res.status(400).json({ error: 'title doesnt match a posting' + id })
     }
-    if (!jwtCertified.title) {
-      return res.status(401).json({ error: 'missing or invaltitle jwToken' })
-    } else if (postingToModify.user.toString() !== jwtCertified.title) {
-      return res.status(401).json({ error: 'authorization failed' })
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: 'missing or invalid token' })
     } else {
       const update = {
         title: req.body.title,
@@ -110,12 +111,15 @@ postingRouter.patch('/patch/:id', async (req, res) => {
         price: req.body.price,
         deliveryType: req.body.deliveryType
       }
-      Posting.findOneAndUpdate(title,update)
+    const temp = await Posting.findOneAndUpdate(id,update)
+    res.json(temp.toJSON())
     }
 
   } catch (exception) {
     return res.status(400).json({ error: 'req is faulty' })
   }
+  
 })
+*/
 
 module.exports = postingRouter

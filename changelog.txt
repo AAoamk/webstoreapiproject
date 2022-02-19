@@ -1,3 +1,5 @@
+1.6.4 fiddling with get requests and mocha
+1.6.3 changed API_PORT to PORT for heroku
 1.6.2 fixed users
 1.6.0 remade postings and users
 1.5.0 reworked auth into middleware
