@@ -7,4 +7,4 @@ the "openapi" type documentation in stoplight with interactable instructions
 and environment for running calls to the api!
 https://snutri.stoplight.io/docs/api-project/b3A6NDE0MjI3OTI-post-api-login
 
-in case the server/openapi has deprecated feel free to contact me at
+in case the server/openapi has deprecated feel free to contact me at snutri.dev@gmail.com or t9alal00@oamk.students.fi
