@@ -2,14 +2,7 @@ const postingRouter = require('express').Router()
 const Posting = require('../models/post')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-
-const getTokenFrom = req => {
-  const authorization = req.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
+const tokenGet = require('../middleware/tokenFetch');
 
 postingRouter.get("/", async (req, res) => {
 	const users = await Posting.find()
@@ -18,7 +11,7 @@ postingRouter.get("/", async (req, res) => {
 
 postingRouter.post('/', async (req, res) => {
   try {
-  const token = getTokenFrom(req)
+  const token = tokenGet.tokenFetch(req)
   if (token == null) {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
@@ -65,7 +58,7 @@ postingRouter.delete('/:id', async (req, res) => {
   const id = req.params.id
   try {
     const postingToDelete = await Posting.findById(id)
-    const token = getTokenFrom(req)
+    const token = tokenGet.tokenFetch(req)
     //console.log("token received")
     if (token == null) {
       return res.status(401).json({ error: 'token missing or invalid' })
@@ -92,7 +85,7 @@ postingRouter.patch('/patch/:id', async (req, res) => {
   const id = req.params.id
   try {
     const postingToModify = await Posting.findById(id)
-    const token = getTokenFrom(req)
+    const token = tokenGet.tokenFetch(req)
     if (token == null) {
       return res.status(401).json({ error: 'token missing or invalid' })
     }
