@@ -18,4 +18,4 @@ create .env file to create local variables, the file should have
 api should run fine after this, you can check the stoplight documentation for further 
 documentation on formatting of body elements and such to make the api calls
 
-in case the server/openapi has deprecated feel free to contact me at
+in case the server/openapi has deprecated feel free to contact me at snutri.dev@gmail.com or t9alal00@oamk.students.fi
