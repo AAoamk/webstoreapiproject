@@ -13,9 +13,9 @@ Running this code in local:
 run npm install to get dependencies
 create .env file to create local variables, the file should have
 
-TOKEN_KEY = 32lettersecretkeyhere
-MONGO_URI = mongodb+srv://yourlinkhere
-PORT = 80 (whatever port you prefer)
+TOKEN_KEY = 32lettersecretkeyhere  
+MONGO_URI = mongodb+srv://yourlinkhere  
+PORT = 80 (whatever port you prefer)  
 
 api should run fine after this, you can check the stoplight documentation for further 
 documentation on formatting of body elements and such to make the api calls
