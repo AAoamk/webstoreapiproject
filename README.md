@@ -6,6 +6,7 @@ https://snutriwebstoreproject.herokuapp.com
 the "openapi" type documentation in stoplight with interactable instructions
 and environment for running calls to the api!
 https://snutri.stoplight.io/docs/api-project/b3A6NDE0MjI3OTI-post-api-login
+the OPENAPI.json file also has the pure openapi style code of the paths!
 
 Running this code in local:
 
