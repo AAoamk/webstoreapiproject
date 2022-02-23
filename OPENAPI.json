@@ -1,0 +1,493 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Project",
+    "version": "1.0",
+    "description": "Webstore"
+  },
+  "servers": [
+    {
+      "url": "https://snutriwebstoreproject.herokuapp.com"
+    }
+  ],
+  "paths": {
+    "/api/users": {
+      "get": {
+        "summary": "GET all users",
+        "tags": [],
+        "operationId": "get-api-users",
+        "description": "get all users from database",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "parameters": [],
+      "post": {
+        "summary": "POST new user",
+        "operationId": "post-api-users",
+        "description": "post a new user into the database",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "x-examples": {
+                  "example-1": {
+                    "username": "tester",
+                    "fullname": "aleksi alavahtola",
+                    "phonenumber": "04156167733",
+                    "email": "testy@gmail.com",
+                    "password": "test"
+                  }
+                },
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "unique"
+                  },
+                  "fullname": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "phonenumber": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "username",
+                  "fullname",
+                  "phonenumber",
+                  "email",
+                  "password"
+                ]
+              },
+              "examples": {
+                "user example": {
+                  "value": {
+                    "username": "stoplight tester",
+                    "fullname": "testy testername",
+                    "phonenumber": "012518251258",
+                    "email": "email@gmail.com",
+                    "password": "passwordhere"
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "summary": "",
+        "operationId": "post-api-login",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "token": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "jwt token"
+              },
+              "username": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "returns username of logged in person"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "username",
+                  "email",
+                  "password"
+                ],
+                "x-examples": {
+                  "example-1": {
+                    "username": "new",
+                    "email": "testy@gmail.com",
+                    "password": "test"
+                  }
+                }
+              }
+            }
+          },
+          "description": "takes in already made user information to log in, receiving jwt token to be used"
+        },
+        "description": "user login, returns username and TOKEN USED FOR JWT WHILE POSTING"
+      }
+    },
+    "/api/postings": {
+      "get": {
+        "summary": "GET postings",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "operationId": "get-api-post",
+        "parameters": [],
+        "description": "gets all postings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      },
+      "parameters": [],
+      "post": {
+        "summary": "POST new posting",
+        "operationId": "post-api-postings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "x-examples": {
+                  "example-1": {
+                    "title": "tt-shirt",
+                    "description": "good pants",
+                    "category": "clothing",
+                    "location": "helsinki",
+                    "price": "5",
+                    "deliverytype": "pickup",
+                    "userid": ""
+                  }
+                },
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "a new porche",
+                    "description": "the title of an item"
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "the description of the item"
+                  },
+                  "category": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "category of the item",
+                    "enum": [
+                      "clothing",
+                      "cars",
+                      "etc"
+                    ]
+                  },
+                  "location": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "locations where the item is being sold",
+                    "enum": [
+                      "oulu",
+                      "helsinki",
+                      "turku"
+                    ]
+                  },
+                  "price": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "price of the item"
+                  },
+                  "deliverytype": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "how is  the item delivered",
+                    "enum": [
+                      "shipping",
+                      "pickup"
+                    ]
+                  },
+                  "userid": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "category",
+                  "location",
+                  "price",
+                  "deliverytype"
+                ]
+              }
+            }
+          },
+          "description": "the body needed to create a new posting object"
+        },
+        "description": "POST endpoint for a new posting",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlciIsImlkIjoiNjIwZmU2NDNiMjQ4NmE0ZTdmMzk3MDU0IiwiaWF0IjoxNjQ1MjA5MTg2fQ.3aK-2hSVUMvb2h06n2EaDJfZkFl1ywCoR3BfR8riOms",
+              "default": "Bearer <token>"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "the jwt tokin from login, requires Bearer before token",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/postings/date/{date}": {
+      "get": {
+        "summary": "GET postings by date",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "operationId": "get-api-postings-date",
+        "parameters": [],
+        "description": "searching up dates from the database replace \":date\" with a date in the format of YYYY-MM-DD"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "date",
+          "in": "path",
+          "required": true,
+          "description": "date in the format of YYYY-MM-DD"
+        }
+      ]
+    },
+    "/api/postings/category/{category}": {
+      "get": {
+        "summary": "GET postings by category",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "operationId": "get-api-postings-category-car",
+        "description": "searching up cars from the database. add car/clothes/etc to the end to sort by that product type",
+        "parameters": []
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "category",
+          "in": "path",
+          "required": true,
+          "description": "category of product car/clothing/etc"
+        }
+      ]
+    },
+    "/api/postings/location/{location}": {
+      "get": {
+        "summary": "GET postings by location",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "operationId": "get-api-postings-location",
+        "description": "searching up postings based on location by adding location name to the end of the url, allowed options oulu/helsinki/turku",
+        "parameters": []
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "location",
+          "in": "path",
+          "required": true,
+          "description": "helsinki/oulu/turku"
+        }
+      ]
+    },
+    "/api/users/del/{id}": {
+      "delete": {
+        "summary": "DELETE user",
+        "operationId": "delete-api-users-del",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "deleting users with their known id (basically admin function)"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "id of user to be deleted"
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "user": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fullname": {
+            "type": "string",
+            "minLength": 1
+          },
+          "phonenumber": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "username",
+          "fullname",
+          "phonenumber",
+          "email",
+          "password"
+        ],
+        "x-examples": {
+          "example-1": {
+            "username": "new",
+            "fullname": "aleksi alavahtola",
+            "phonenumber": "04156167733",
+            "email": "testy@gmail.com",
+            "password": "test"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "title": "agasg",
+            "description": "i hate debugging",
+            "category": "clothing",
+            "location": "helsinki",
+            "price": "5",
+            "deliverytype": "pickup",
+            "userReference": ""
+          }
+        },
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "location": {
+            "type": "string",
+            "minLength": 1
+          },
+          "price": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deliverytype": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userReference": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "category",
+          "location",
+          "price",
+          "deliverytype"
+        ]
+      }
+    },
+    "requestBodies": {}
+  }
+}
