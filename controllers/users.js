@@ -3,13 +3,13 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const tokenGet = require('../middleware/tokenFetch');
-
+//posting a new user
 usersRouter.post('/', async (req, res, next) => {
   try {
-    
-    const saltRounds = 10
+    //taking the body of the posting
     console.log(req.body)
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+    //hashing its password so no password gets saved in regular form
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
     const user = new User({
       username: req.body.username,
@@ -18,7 +18,7 @@ usersRouter.post('/', async (req, res, next) => {
       email: req.body.email,
       hashedPassword,
     })
-
+//saving the user
     const savedUser = await user.save()
 
     res.json(savedUser)
@@ -26,12 +26,12 @@ usersRouter.post('/', async (req, res, next) => {
     next(exception)
   }
 })
-
+//get all users without formatting
 usersRouter.get('/', async (req, res) => {
   const users = await User.find()
 	res.send(users)
 })
-
+//deleting user based on id - basically admin delete
 usersRouter.delete('/del/:id', async (req, res)=> {
   User
   .findByIdAndRemove(req.params.id)
@@ -41,7 +41,7 @@ usersRouter.delete('/del/:id', async (req, res)=> {
     return res.status(204).end();
   })
 });
-
+//user based delete that requires auth
 usersRouter.delete('/:id', async (request, response) => 
 {
   try 

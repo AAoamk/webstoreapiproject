@@ -1,3 +1,4 @@
+//tool to check authentication 
 const tokenFetch = req => {
     const authorization = req.get('authorization')
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {

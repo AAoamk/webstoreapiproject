@@ -4,7 +4,7 @@ const cors = require('cors')
 const postingRouter = require('./controllers/postings')
 const usersRouter = require('./controllers/users')
 const authentication = require('./middleware/auth')
-
+//generally just routing the endpoints
 app.use(cors())
 app.use(express.json())
 

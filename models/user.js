@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema({
 	postings: [
 		{
 		  type: mongoose.Schema.Types.ObjectId,
-		  ref: 'posts' //check this out 
+		  ref: 'posts' 
 		}
 	  ],
 },{ versionKey: false,timestamps: true  })

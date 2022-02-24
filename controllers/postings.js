@@ -3,13 +3,14 @@ const Posting = require('../models/post')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const tokenGet = require('../middleware/tokenFetch');
-
+//get ALL postings without any special formatting or such
 postingRouter.get("/", async (req, res) => {
 	const users = await Posting.find()
 	res.send(users)
 })
-
+//posting a new posting, giving a json format body of information to go alongside it
 postingRouter.post('/', async (req, res) => {
+  //the code to check for the jwt token generated at login
   try {
   const token = tokenGet.tokenFetch(req)
   if (token == null) {
@@ -19,8 +20,9 @@ postingRouter.post('/', async (req, res) => {
   if (!token || !decodedToken.id) {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
+  //if tests are passed, search for the user by the tokens id to give relative information to the body
   const user = await User.findById(decodedToken.id)
-
+  //taking the body information and passing it as a new posting
   const posting = new Posting({
     title: req.body.title,
     description: req.body.description,
@@ -31,7 +33,7 @@ postingRouter.post('/', async (req, res) => {
     deliveryType: req.body.deliveryType,
     userReference: user.id
 })
-
+//saving the generated posting, with the user data, then sending it back as a json
   const savedPosting = await posting.save()
   user.postings = user.postings.concat(savedPosting._id)
   await user.save()
@@ -40,7 +42,7 @@ postingRouter.post('/', async (req, res) => {
   return res.status(400).json({ error: 'duplicate' })
 }
 })
-
+//the three different search types based on location/category/date with some nice regex on the date
 postingRouter.get('/location/:location', async (req, res) => {
   const posting = await Posting.find({location: req.params.location}).populate('userReference', ['fullname', 'phonenumber', 'email'])
   res.send(posting)
@@ -53,7 +55,7 @@ postingRouter.get('/date/:date', async (req, res) => {
   const posting = await Posting.find({dateOfPost: {$regex: "[0-9]{4}-[0-9]{2}-[0-9]{2}","$options": "i"} }).populate('userReference', ['fullname', 'phonenumber', 'email'])
   res.send(posting)
 })
-
+//deleting a posting based on id, while checking for authentication
 postingRouter.delete('/:id', async (req, res) => {
   const id = req.params.id
   try {
