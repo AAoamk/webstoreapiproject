@@ -1,11 +1,13 @@
 var chai = require('chai');
 chaiHttp = require('chai-http');
+const expect = chai.expect;
 chai.use(chaiHttp);
 const User = require('../models/user')
 module.exports = require('./');
 const assert = require('assert');
 require('dotenv').config()
 const PORT = process.env.PORT
+var storedToken = 'null';
 let server = `http://localhost:${process.env.PORT}`
 describe('/GET users', () => 
 {
@@ -107,6 +109,66 @@ describe('/GET postings by location', () =>
         chai.expect(res.body[0]).to.have.property('price');
         chai.expect(res.body[0]).to.have.property('userReference');
 
+        done();
+      });
+    });
+});
+describe('POST login', () => 
+{
+    it('It should try to login and return 200 status.', (done) => 
+    {
+      let user = {
+        "username": "mochatest",
+        "email": "mochatest@gmail.com",
+        "password": "mochatest"
+      }
+      chai.request(server).post('/api/login')
+      .send(user)
+      .end((err, res) => 
+      {
+        expect(err).to.be.null;
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('token');
+        expect(res.body).to.have.property('username');
+        storedToken = res.body.token;
+        done();
+      });
+    });
+});
+
+describe('POST listings', () => 
+{
+    let listing = {
+      "title": "Test",
+      "description": "Test1",
+      "category": "Test2CategoryMOCHA",
+      "location": "Test3",
+      "price": 200,
+      "deliverytype": "shipping",
+    }
+    it('It should try to post listing with stored token and succeed.', (done) => 
+    {
+      chai.request(server).post('/api/postings')
+      .auth(storedToken, { type: 'bearer' })
+      .send(listing)
+      .end((err, res) => 
+      {
+        expect(storedToken).not.to.be.null;
+        expect(err).to.be.null;
+        expect(res).to.not.have.status(401);
+        done();
+      });
+    });
+});
+
+describe('GET listings', () => 
+{
+    it('It should return the listings array.', (done) => 
+    {
+      chai.request(server).get('/api/postings').end((err, res) => 
+      {
+        expect(err).to.be.null;
+        expect(res).to.have.property('body');
         done();
       });
     });
